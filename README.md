@@ -14,6 +14,8 @@ Automated tests are currently in progress and will be added in an upcoming relea
 
 You pass a controlled `value` string into the hook (plus optional `cacheExpiration`, `cacheKey`, and `config`). The hook waits for `window.google.maps.places.AutocompleteSuggestion`, debounces calls to `fetchAutocompleteSuggestions`, caches results per lowercased query in `sessionStorage`, and returns `isLoading`, `onClear`, `onSelectPrediction`, and `predictions` for you to wire into your UI.
 
+`cacheKey`, `cacheExpiration`, and `config` are expected to be stable per hook instance. If you need different settings (e.g. domestic vs international), use separate `useGooglePlacesSuggestions` instances rather than changing options dynamically.
+
 ```tsx
 import { useState } from 'react'
 import {
