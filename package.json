@@ -61,7 +61,8 @@
     "build": "tsc -b",
     "build:demo": "vite build",
     "test": "vitest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepublishOnly": "npm run build"
   },
   "type": "module",
   "types": "dist/index.d.ts",
