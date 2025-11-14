@@ -23,8 +23,7 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
@@ -58,7 +57,7 @@
     "url": "https://github.com/mlane/use-google-places-suggestions.git"
   },
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && vite build",
     "build:demo": "vite build",
     "test": "vitest",
     "lint": "eslint .",
@@ -66,5 +65,5 @@
   },
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.1.1"
+  "version": "0.1.2"
 }
