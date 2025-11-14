@@ -1,5 +1,9 @@
 # use-google-places-suggestions
 
+[![version](https://img.shields.io/npm/v/use-google-places-suggestions?style=flat-square)](https://www.npmjs.com/package/use-google-places-suggestions)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/use-google-places-suggestions)
+![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)
+
 A lightweight, zero-dependency React hook for Google Places Autocomplete using the modern [**AutocompleteSuggestion API**](https://developers.google.com/maps/documentation/javascript/reference/autocomplete-data#AutocompleteSuggestion). It handles talking to Google, debouncing, and `sessionStorage` caching; your UI and state stay in your app. Inspired by [`use-places-autocomplete`](https://github.com/wellyshen/use-places-autocomplete), but deliberately UI-agnostic.
 
 ```bash
