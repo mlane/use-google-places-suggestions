@@ -1,0 +1,69 @@
+{
+  "author": "Marcus Lane",
+  "bugs": {
+    "url": "https://github.com/mlane/use-google-places-suggestions/issues"
+  },
+  "description": "A lightweight React hook for Google Places autocomplete using the modern AutocompleteSuggestion API.",
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/google.maps": "^3.58.1",
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^5.1.0",
+    "eslint": "^9.39.1",
+    "prettier": "3.6.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.3",
+    "vite": "^7.2.2",
+    "vitest": "^4.0.8"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/mlane/use-google-places-suggestions",
+  "keywords": [
+    "react",
+    "hook",
+    "google-places",
+    "google-maps",
+    "places-suggestions",
+    "autocomplete",
+    "google-places-suggestions",
+    "autocomplete-suggestion",
+    "react-hook",
+    "geocoder",
+    "geocoding"
+  ],
+  "license": "MIT",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "name": "use-google-places-suggestions",
+  "sideEffects": false,
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mlane/use-google-places-suggestions.git"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "build:demo": "vite build",
+    "test": "vitest",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}
