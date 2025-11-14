@@ -58,7 +58,7 @@
     "url": "https://github.com/mlane/use-google-places-suggestions.git"
   },
   "scripts": {
-    "build": "tsc -b",
+    "build": "tsc --build tsconfig.build.json",
     "build:demo": "vite build",
     "test": "vitest",
     "lint": "eslint .",
@@ -66,5 +66,5 @@
   },
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.1.0"
+  "version": "0.1.1"
 }
