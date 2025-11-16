@@ -6,7 +6,7 @@
  */
 const debounce = <T>(
   callback: (props: T) => void,
-  duration = 0
+  duration = 300
 ): ((props: T) => void) & {
   cancel: VoidFunction
 } => {

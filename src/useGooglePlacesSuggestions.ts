@@ -39,7 +39,7 @@ export const useGooglePlacesSuggestions = ({
   )
 
   useEffect(() => {
-    let waitForAutocompleteSuggestion = setInterval(() => {
+    const waitForAutocompleteSuggestion = setInterval(() => {
       if (window?.google?.maps?.places?.AutocompleteSuggestion) {
         setIsLoading(false)
         clearInterval(waitForAutocompleteSuggestion)
@@ -82,12 +82,12 @@ export const useGooglePlacesSuggestions = ({
         return setPredictions(cachedData?.[cacheItemKey]?.data)
 
       const { suggestions } =
-        await google?.maps?.places?.AutocompleteSuggestion?.fetchAutocompleteSuggestions(
+        (await google?.maps?.places?.AutocompleteSuggestion?.fetchAutocompleteSuggestions(
           {
             ...config,
             input: updatedValue,
           }
-        )
+        )) ?? []
       const flattenedSuggestions = flattenSuggestions(suggestions)
       setPredictions(flattenedSuggestions ?? [])
       cachedData[cacheItemKey] = {
