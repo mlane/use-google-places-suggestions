@@ -16,7 +16,9 @@ Automated tests are currently in progress and will be added in an upcoming relea
 
 ## How it works
 
-You pass a controlled `value` string into the hook (plus optional `cacheExpiration`, `cacheKey`, and `config`). The hook waits for `window.google.maps.places.AutocompleteSuggestion`, debounces calls to `fetchAutocompleteSuggestions`, caches results per lowercased query in `sessionStorage`, and returns `isLoading`, `onClear`, `onSelectPrediction`, and `predictions` for you to wire into your UI.
+You pass a controlled `value` string into the hook (plus optional `cacheExpiration`, `cacheKey`, and `config`). The hook waits for `window.google.maps.places.AutocompleteSuggestion`, debounces calls to `fetchAutocompleteSuggestions`, caches results per lowercased query in `sessionStorage`, and returns `isLoading`, `onClear`, `onSelectPrediction`, `predictions`, and `sessionToken` for you to wire into your UI.
+
+The hook automatically manages `sessionToken` to reduce Google Places API costs. When you use the same `sessionToken` for both Autocomplete Suggestions and Place Details, Google charges for a single session instead of separate charges. The token is automatically renewed after each selection.
 
 `cacheKey`, `cacheExpiration`, and `config` are expected to be stable per hook instance. If you need different settings (e.g. domestic vs international), use separate `useGooglePlacesSuggestions` instances rather than changing options dynamically.
 
@@ -30,7 +32,7 @@ import {
 
 export const Geocoder = () => {
   const [value, setValue] = useState('')
-  const { isLoading, onClear, onSelectPrediction, predictions } =
+  const { isLoading, onClear, onSelectPrediction, predictions, sessionToken } =
     useGooglePlacesSuggestions({
       value,
       // cacheExpiration: 24 * 60 * 60, // optional (seconds, default 24h)
@@ -72,6 +74,35 @@ export const Geocoder = () => {
        */
       const latLng = getGooglePlacesGeocodeLatLng(first)
     })
+  }
+
+  // Example: Using sessionToken with Place Details API for cost reduction
+  const onClickWithPlaceDetails = (
+    prediction: google.maps.places.AutocompleteSuggestion['placePrediction']
+  ) => {
+    const selectedPrediction = onSelectPrediction(prediction)
+
+    if (!selectedPrediction?.placeId || !sessionToken) return
+
+    // Use the same sessionToken from autocomplete in Place Details
+    // This reduces costs by grouping autocomplete + place details as one session
+    const service = new google.maps.places.PlacesService(
+      document.createElement('div')
+    )
+
+    service.getDetails(
+      {
+        placeId: selectedPrediction.placeId,
+        sessionToken: sessionToken,
+        fields: ['name', 'formatted_address', 'geometry', 'place_id'],
+      },
+      (place, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && place) {
+          // Use place details here
+          console.log('Place details:', place)
+        }
+      }
+    )
   }
 
   return (
