@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { debounce, flattenSuggestions } from '../utils'
+import { debounce, flattenSuggestions, getGooglePlacesGeocode } from '../utils'
+import { geocoderResultMock } from './__mocks__/geocoderResultMock'
+
+type GeocoderCallback = (
+  results: google.maps.GeocoderResult[] | null,
+  status: google.maps.GeocoderStatus
+) => void
 
 describe('utils', () => {
   describe('debounce', () => {
@@ -106,7 +112,78 @@ describe('utils', () => {
     })
   })
 
-  describe.skip('getGooglePlacesGeocode', () => {})
+  describe('getGooglePlacesGeocode', () => {
+    beforeEach(() => {
+      vi.stubGlobal('google', {
+        maps: {
+          Geocoder: class {
+            geocode() {}
+          },
+        },
+      })
+    })
+
+    afterEach(() => {
+      vi.unstubAllGlobals()
+    })
+
+    test('should reject when geocoder status is not OK', async () => {
+      google.maps.Geocoder.prototype.geocode = (
+        _: google.maps.GeocoderRequest,
+        callback: GeocoderCallback
+      ): Promise<google.maps.GeocoderResponse> => {
+        callback(null, google.maps.GeocoderStatus.ERROR)
+        return Promise.resolve({
+          results: [],
+          status: google.maps.GeocoderStatus.ERROR,
+        })
+      }
+      await expect(
+        getGooglePlacesGeocode({
+          address: null,
+        })
+      ).rejects.toThrow()
+    })
+
+    test('should resolve with results when geocoder status is OK', async () => {
+      google.maps.Geocoder.prototype.geocode = (
+        _: google.maps.GeocoderRequest,
+        callback: GeocoderCallback
+      ): Promise<google.maps.GeocoderResponse> => {
+        callback([geocoderResultMock], 'OK' as google.maps.GeocoderStatus)
+        return Promise.resolve({
+          results: [geocoderResultMock],
+          status: google.maps.GeocoderStatus.OK,
+        })
+      }
+      const result = await getGooglePlacesGeocode({
+        address: 'ADDRESS',
+      })
+      expect(result).toEqual([geocoderResultMock])
+    })
+
+    test('should log an error when componentRestrictions is provided without an address', async () => {
+      google.maps.Geocoder.prototype.geocode = (
+        _: google.maps.GeocoderRequest,
+        callback: GeocoderCallback
+      ): Promise<google.maps.GeocoderResponse> => {
+        callback([], 'OK' as google.maps.GeocoderStatus)
+        return Promise.resolve({
+          results: [],
+          status: google.maps.GeocoderStatus.OK,
+        })
+      }
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const result = await getGooglePlacesGeocode({
+        componentRestrictions: {
+          country: 'US',
+        },
+      })
+      expect(errorSpy).toHaveBeenCalled()
+      errorSpy.mockRestore()
+      expect(result).toEqual([])
+    })
+  })
 
   describe.skip('getGooglePlacesGeocodeLatLng', () => {})
 })
