@@ -6,23 +6,25 @@
   "description": "A lightweight React hook for Google Places autocomplete using the modern AutocompleteSuggestion API.",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@testing-library/react": "^16.3.0",
     "@types/google.maps": "^3.58.1",
     "@types/node": "^24.10.0",
-    "@types/react": "^19.2.5",
+    "@types/react": "^19.2.6",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
-    "@vitest/coverage-v8": "^4.0.9",
+    "@vitest/coverage-v8": "^4.0.13",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "jsdom": "^27.0.1",
     "prettier": "3.6.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.2",
-    "vitest": "^4.0.9"
+    "typescript-eslint": "^8.47.0",
+    "vite": "^7.2.4",
+    "vitest": "^4.0.13"
   },
   "exports": {
     ".": {
