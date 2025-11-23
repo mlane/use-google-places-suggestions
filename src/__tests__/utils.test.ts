@@ -1,5 +1,10 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { debounce, flattenSuggestions, getGooglePlacesGeocode } from '../utils'
+import {
+  debounce,
+  flattenSuggestions,
+  getGooglePlacesGeocode,
+  getGooglePlacesGeocodeLatLng,
+} from '../utils'
 import { geocoderResultMock } from './__mocks__/geocoderResultMock'
 
 type GeocoderCallback = (
@@ -185,5 +190,24 @@ describe('utils', () => {
     })
   })
 
-  describe.skip('getGooglePlacesGeocodeLatLng', () => {})
+  describe('getGooglePlacesGeocodeLatLng', () => {
+    test('should return latitude and longitude from the geocoder result', () => {
+      expect(getGooglePlacesGeocodeLatLng(geocoderResultMock)).toEqual({
+        lat: geocoderResultMock.geometry.location.lat(),
+        lng: geocoderResultMock.geometry.location.lng(),
+      })
+    })
+
+    test('should handle missing geometry location fields', () => {
+      expect(() =>
+        getGooglePlacesGeocodeLatLng({
+          ...geocoderResultMock,
+          geometry: {
+            ...geocoderResultMock.geometry,
+            location: undefined as unknown as google.maps.LatLng,
+          },
+        })
+      ).toThrow()
+    })
+  })
 })
